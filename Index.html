@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PTS Web Pro 8 - CRUD Siswa</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>PTS Web Pro 8 - CRUD Siswa</h1>
+    <div class="header-image">
+      
+    </div>
+  </header>
+
+  <main>
+    <section class="form-section">
+      <form id="studentForm">
+        <input type="hidden" id="studentId" />
+        <input type="text" id="name" placeholder="Nama Lengkap" required />
+        <select id="gender" required>
+          <option value="">Pilih Gender</option>
+          <option value="Laki-laki">Laki-laki</option>
+          <option value="Perempuan">Perempuan</option>
+        </select>
+        <input type="date" id="dob" />
+        <input type="text" id="placeOfBirth" placeholder="Tempat Lahir" />
+        <input type="text" id="address" placeholder="Alamat" />
+        <input type="text" id="class" placeholder="Kelas" />
+        <button type="submit">Tambah Siswa</button>
+        <button type="button" id="cancelBtn" style="display:none;">Batal Edit</button>
+      </form>
+    </section>
+
+    <section class="table-section">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Gender</th>
+            <th>Tanggal Lahir</th>
+            <th>Tempat Lahir</th>
+            <th>Alamat</th>
+            <th>Kelas</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="studentsTableBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 PTS Web Pro 8</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('studentForm');
+    const studentIdInput = document.getElementById('studentId');
+    const nameInput = document.getElementById('name');
+    const genderInput = document.getElementById('gender');
+    const dobInput = document.getElementById('dob');
+    const placeOfBirthInput = document.getElementById('placeOfBirth');
+    const addressInput = document.getElementById('address');
+    const classInput = document.getElementById('class');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const studentsTableBody = document.getElementById('studentsTableBody');
+
+    let isEditing = false;
+
+    async function fetchStudents() {
+      const res = await fetch('/api/students');
+      const data = await res.json();
+      renderTable(data);
+    }
+
+    function renderTable(students) {
+      studentsTableBody.innerHTML = '';
+      students.forEach(student => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${student.id}</td>
+          <td>${student.name}</td>
+          <td>${student.gender}</td>
+          <td>${student.date_of_birth || ''}</td>
+          <td>${student.place_of_birth || ''}</td>
+          <td>${student.address || ''}</td>
+          <td>${student.class || ''}</td>
+          <td>
+            <button class="btn-edit" onclick="editStudent(${student.id})">Edit</button>
+            <button class="btn-delete" onclick="deleteStudent(${student.id})">Hapus</button>
+          </td>
+        `;
+        studentsTableBody.appendChild(tr);
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = studentIdInput.value;
+      const name = nameInput.value.trim();
+      const gender = genderInput.value;
+      const dob = dobInput.value;
+      const placeOfBirth = placeOfBirthInput.value.trim();
+      const address = addressInput.value.trim();
+      const kelas = classInput.value.trim();
+
+      if (!name || !gender) {
+        alert('Nama dan gender wajib diisi!');
+        return;
+      }
+
+      const studentData = { 
+        name, 
+        gender, 
+        date_of_birth: dob, 
+        place_of_birth: placeOfBirth, 
+        address, 
+        class: kelas 
+      };
+
+      if (isEditing) {
+        const res = await fetch(`/api/students/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentData)
+        });
+        if (res.ok) {
+          resetForm();
+          fetchStudents();
+        } else {
+          alert('Gagal update data');
+        }
+      } else {
+        const res = await fetch('/api/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(studentData)
+        });
+        if (res.ok) {
+          resetForm();
+          fetchStudents();
+        } else {
+          alert('Gagal tambah data');
+        }
+      }
+    });
+
+    async function editStudent(id) {
+      const res = await fetch('/api/students');
+      const students = await res.json();
+      const student = students.find(s => s.id === id);
+      if (!student) return alert('Data tidak ditemukan');
+
+      studentIdInput.value = student.id;
+      nameInput.value = student.name;
+      genderInput.value = student.gender;
+      dobInput.value = student.date_of_birth || '';
+      placeOfBirthInput.value = student.place_of_birth || '';
+      addressInput.value = student.address || '';
+      classInput.value = student.class || '';
+      isEditing = true;
+      form.querySelector('button[type="submit"]').textContent = 'Update Siswa';
+      cancelBtn.style.display = 'inline-block';
+    }
+
+    async function deleteStudent(id) {
+      if (confirm('Yakin ingin menghapus data ini?')) {
+        const res = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          fetchStudents();
+        } else {
+          alert('Gagal hapus data');
+        }
+      }
+    }
+
+    function resetForm() {
+      studentIdInput.value = '';
+      nameInput.value = '';
+      genderInput.value = '';
+      dobInput.value = '';
+      placeOfBirthInput.value = '';
+      addressInput.value = '';
+      classInput.value = '';
+      isEditing = false;
+      form.querySelector('button[type="submit"]').textContent = 'Tambah Siswa';
+      cancelBtn.style.display = 'none';
+    }
+
+    cancelBtn.addEventListener('click', resetForm);
+
+    fetchStudents();
+  </script>
+</body>
+</html>
