@@ -1,0 +1,213 @@
+/* Reset dan dasar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url(pesatt.jpg) no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: -1;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  header h1 {
+    font-size: 2.8rem;
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  }
+  
+  .header-image img {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+  
+  main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .form-section {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 40px;
+  }
+  
+  form input, form select, form button {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  form input:focus, form select:focus {
+    border-color: #2980b9;
+    outline: none;
+  }
+  
+  form button {
+    background-color: #2980b9;
+    color: white;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(41, 128, 185, 0.5);
+    margin-top: 25px;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #1c5980;
+  }
+  
+  #cancelBtn {
+    background-color: #7f8c8d;
+    margin-top: 10px;
+    box-shadow: none;
+  }
+  
+  #cancelBtn:hover {
+    background-color: #606c6f;
+  }
+  
+  .table-section {
+    width: 100%;
+    max-width: 900px;
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    color: #333;
+  }
+  
+  thead th {
+    background-color: #2980b9;
+    color: white;
+    font-weight: 700;
+    padding: 15px 20px;
+    text-align: left;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+  
+  tbody tr {
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+  }
+  
+  tbody tr:hover {
+    background-color: #eaf4fc;
+  }
+  
+  tbody td {
+    padding: 15px 20px;
+    vertical-align: middle;
+  }
+  
+  .btn-edit, .btn-delete {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin-right: 8px;
+  }
+  
+  .btn-edit {
+    background-color: #27ae60;
+    color: white;
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.5);
+  }
+  
+  .btn-edit:hover {
+    background-color: #1e8449;
+  }
+  
+  .btn-delete {
+    background-color: #e74c3c;
+    color: white;
+    box-shadow: 0 5px 15px rgba(231, 76, 60, 0.5);
+  }
+  
+  .btn-delete:hover {
+    background-color: #c0392b;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 15px 0;
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 40px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .form-section, .table-section {
+      width: 100%;
+    }
+    header h1 {
+      font-size: 2rem;
+    }
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url(pesatt.jpg) no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+  
+  /* Optional: overlay putih transparan agar konten mudah dibaca */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: -1;
+  }
+  <link rel="stylesheet" href="style.css" />
